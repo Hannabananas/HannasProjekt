@@ -1,0 +1,57 @@
+{% extends "base-template.html" %}
+
+{% block title %}
+    User Management
+{% endblock %}
+
+{% block content %}
+    <br>
+    <br>
+    <br>
+    <div>Feel free to browse our users below</div>
+    <br>
+    <br>
+    <br>
+    <table class="center">
+        <tr>
+            <th>Name</th>
+            <th>Online</th>
+            <th>Admin Status</th>
+            <th>Make Admin</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>
+                    {% if user.online %}
+                        <div class="circle online"></div>
+                    {% else %}
+                        <div class="circle offline"></div>
+                    {% endif %}
+                </td>
+                <td >
+                  {% if user.admin %}
+                    <div class="circle online"></div>
+                  {% else %}
+                    <div class="circle offline"></div>
+                  {% endif %}
+                </td>
+              <td>
+                {% if user.admin %}
+                  <form action="{{ url_for('bp_user.remove_admin')}}" method="POST">
+                      <input type="number" name="id" value="{{ user.id }}" hidden>
+                      <button type="submit">Remove this users privileges</button>
+                  </form>
+
+                {% else %}
+                  <form action="{{ url_for('bp_user.make_admin')}}" method="POST">
+                      <input type="number" name="id" value="{{ user.id }}" hidden>
+                      <button type="submit">Make this user an admin</button>
+                  </form>
+                {% endif %}
+
+              </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
